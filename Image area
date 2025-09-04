@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gambar Interaktif – 3 Area Klik</title>
+  <style>
+    :root {
+      --ring: 3px;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: #0b1020;
+      color: #eaf0ff;
+      line-height: 1.5;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(1100px, 96vw);
+      background: #111733;
+      border: 1px solid #243055;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      overflow: hidden;
+    }
+    header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #243055;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    header h1 {
+      font-size: 18px;
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    header .hint { opacity: .8; font-size: 14px; }
+
+    .img-wrap {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+    .img-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.05);
+    }
+
+    /* Hotspot dasar */
+    .hotspot {
+      position: absolute;
+      display: inline-block;
+      outline: none;
+      border-radius: var(--radius);
+      text-decoration: none;
+      /* Area klik tak terlihat, muncul saat hover/focus */
+      background: rgba(255,255,255,0.02);
+    }
+    .hotspot::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 50%;
+      top: -40px;
+      transform: translateX(-50%);
+      padding: 8px 12px;
+      font-size: 13px;
+      background: rgba(9, 14, 32, .9);
+      color: #cfe2ff;
+      border: 1px solid #2b3a6d;
+      border-radius: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .hotspot:hover::after,
+    .hotspot:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(-2px); }
+    .hotspot:hover,
+    .hotspot:focus-visible { box-shadow: 0 0 0 var(--ring) rgba(116, 162, 255, .45), inset 0 0 0 1px rgba(116, 162, 255, .9); background: rgba(116, 162, 255, .08); }
+
+    /* 3 area contoh (pakai persen agar responsif) */
+    /* Area 1: Pojok kiri atas */
+    .area-1 { left: 6%; top: 10%; width: 20%; height: 22%; }
+    /* Area 2: Lingkaran di tengah */
+    .area-2 { left: 42%; top: 38%; width: 16%; height: 24%; border-radius: 999px; }
+    /* Area 3: Pojok kanan bawah */
+    .area-3 { right: 6%; bottom: 8%; width: 22%; height: 24%; }
+
+    footer { padding: 16px 20px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .legend { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { padding: 6px 10px; border-radius: 999px; border: 1px solid #2b3a6d; background: #111933; font-size: 12px; opacity: .9; }
+    .small { font-size: 12px; opacity: .8; }
+    .btn {
+      border: 1px solid #2b3a6d;
+      background: #152046;
+      color: #d7e6ff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform .06s ease, box-shadow .2s ease;
+    }
+    .btn:hover { box-shadow: 0 6px 18px rgba(116,162,255,.18); }
+    .btn:active { transform: translateY(1px); }
+  </style>
+</head>
+<body>
+  <div class="card" role="region" aria-label="Contoh gambar dengan area klik (hotspot)">
+    <header>
+      <h1>Gambar Interaktif – Klik 3 Area Berbeda</h1>
+      <div class="hint">Arahkan kursor untuk melihat label, lalu klik untuk membuka tautan.</div>
+    </header>
+
+    <div class="img-wrap">
+      <img src="https://picsum.photos/1600/900?image=1043" alt="Pemandangan kota futuristik (contoh). Tiga area pada gambar dapat diklik." />
+
+      <!-- Area 1: ke Wikipedia -->
+      <a class="hotspot area-1" href="https://www.wikipedia.org" target="_blank" rel="noopener" title="Buka Wikipedia" aria-label="Area 1: Buka Wikipedia" data-label="Area 1 → Wikipedia"></a>
+
+      <!-- Area 2: ke GitHub -->
+      <a class="hotspot area-2" href="https://github.com" target="_blank" rel="noopener" title="Buka GitHub" aria-label="Area 2: Buka GitHub" data-label="Area 2 → GitHub"></a>
+
+      <!-- Area 3: ke Google Maps -->
+      <a class="hotspot area-3" href="https://maps.google.com" target="_blank" rel="noopener" title="Buka Google Maps" aria-label="Area 3: Buka Google Maps" data-label="Area 3 → Google Maps"></a>
+    </div>
+
+    <footer>
+      <div class="legend">
+        <span class="pill">Area 1: kiri atas → Wikipedia</span>
+        <span class="pill">Area 2: tengah (lingkaran) → GitHub</span>
+        <span class="pill">Area 3: kanan bawah → Google Maps</span>
+      </div>
+      <div class="small">Tip: posisi & ukuran hotspot pakai satuan persen, jadi tetap responsif di layar apa pun.</div>
+      <a class="btn" href="#" onclick="history.back(); return false;">Kembali</a>
+    </footer>
+  </div>
+</body>
+</html>
